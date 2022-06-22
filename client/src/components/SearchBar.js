@@ -8,7 +8,7 @@ const SearchBar = ({ query, setQuery }) => {
         <SearchIcon className="w-5 h-5" />
       </div>
       <input
-        className="w-full h-10 pl-10 px-4 text-lg bg-white border-2 border-gray-300 focus:outline-none"
+        className="w-full h-10 pl-10 px-4 text-lg bg-white border-2 border-gray-400 focus:outline-none"
         type="search"
         name="search"
         placeholder="Search..."
