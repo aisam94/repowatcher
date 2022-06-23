@@ -2,6 +2,8 @@ import React from "react";
 import { StarIcon, EyeIcon } from "@heroicons/react/outline";
 import GitFork from "../icons/git-fork.svg";
 
+import { Link } from "react-router-dom";
+
 const RepoListItem = ({
   name,
   index,
@@ -14,12 +16,7 @@ const RepoListItem = ({
 }) => {
   return (
     <li className="relative bg-yellow-300 hover:bg-yellow-400 list-none">
-      <a
-        className="block sm:px-2 pb-1"
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <Link to={`/repo/${index}`}>
         <div>
           {/* name & language wrapper */}
           <div className="flex text-white relative font-normal sm:mb-1 mt-0 leading-none whitespace-nowrap">
@@ -63,8 +60,7 @@ const RepoListItem = ({
         <p className="mb-0 mt-1 px-2 sm:p-auto text-gray-600 overflow-hidden whitespace-nowrap text-ellipsis">
           {description}
         </p>
-        <div></div>
-      </a>
+      </Link>
     </li>
   );
 };
