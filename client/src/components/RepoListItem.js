@@ -4,15 +4,22 @@ import GitFork from "../icons/git-fork.svg";
 
 const RepoListItem = ({
   name,
+  index,
   stars,
   watchers,
   forks,
   description,
   language,
+  url,
 }) => {
   return (
     <li className="relative bg-yellow-300 hover:bg-yellow-400 list-none">
-      <a className="block sm:px-2 pb-1" href="#">
+      <a
+        className="block sm:px-2 pb-1"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <div>
           {/* name & language wrapper */}
           <div className="flex text-white relative font-normal sm:mb-1 mt-0 leading-none whitespace-nowrap">

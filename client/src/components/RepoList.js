@@ -16,12 +16,14 @@ const RepoList = ({ repo }) => {
             return (
               <RepoListItem
                 key={index}
+                index={index}
                 name={item.name}
                 description={item.description}
                 stars={item.stargazers_count}
                 watchers={item.watchers_count}
                 forks={item.forks_count}
                 language={item.language}
+                url={item.html_url}
               />
             );
           })}

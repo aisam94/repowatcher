@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import RepoListItem from "./RepoListItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowNarrowLeftIcon } from "@heroicons/react/solid";
 import GitHubIcon from "../icons/GitHub-Mark-64px.png";
 
-const RepoPage = ({ name, stars, watchers, forks, description, language }) => {
+import { useDispatch, useSelector } from "react-redux";
+
+const RepoPage = ({}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const repoItem = useSelector((state) => state.repo.repo[id]);
 
   return (
     <main className="mt-5 mx-10 space-y-2">
@@ -20,7 +26,16 @@ const RepoPage = ({ name, stars, watchers, forks, description, language }) => {
         <span>Go Back</span>
       </button>
 
-      <RepoListItem />
+      {repoItem && (
+        <RepoListItem
+          name={repoItem.name}
+          description={repoItem.description}
+          stars={repoItem.stargazers_count}
+          watchers={repoItem.watchers_count}
+          forks={repoItem.forks_count}
+          language={repoItem.language}
+        />
+      )}
 
       <div className="w-full px-10 py-1 flex justify-between bg-yellow-100">
         {/* created at*/}

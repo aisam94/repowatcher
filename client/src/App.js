@@ -8,7 +8,7 @@ function App() {
     <>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/repo" element={<RepoPage />} />
+        <Route exact path="/repo/:id" element={<RepoPage />} />
       </Routes>
     </>
   );
