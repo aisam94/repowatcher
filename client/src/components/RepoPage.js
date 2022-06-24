@@ -12,6 +12,8 @@ const RepoPage = ({}) => {
   const { id } = useParams();
 
   const repoItem = useSelector((state) => state.repo.repo[id]);
+  const createdDate = new Date(repoItem.created_at);
+  const updatedDate = new Date(repoItem.updated_at);
 
   return (
     <main className="mt-5 mx-10 space-y-2">
@@ -38,13 +40,13 @@ const RepoPage = ({}) => {
       <div className="w-full px-10 py-1 flex justify-between bg-yellow-100">
         {/* created at*/}
         <div className="mt-2">
-          <h3 className="mb-2">CREATED</h3>
-          <div className="text-xl">10 years ago</div>
+          <h3 className="mb-2">Created at</h3>
+          <div className="text-xl">{createdDate.toDateString()}</div>
         </div>
         {/* updated at*/}
         <div className="mt-2">
-          <h3 className="mb-2">UPDATED</h3>
-          <div className="text-xl">10 years ago</div>
+          <h3 className="mb-2">Last updated at</h3>
+          <div className="text-xl">{updatedDate.toDateString()}</div>
         </div>
         {/* Github link to actual repo */}
         <a
