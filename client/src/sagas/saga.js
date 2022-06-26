@@ -6,7 +6,7 @@ import {
   requestRepoFail,
 } from "../actions/repoAction";
 
-function* fetchRepo(action) {
+function* fetchRepo() {
   try {
     yield put(requestRepo());
     const result = yield call(() => {

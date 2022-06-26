@@ -6,27 +6,26 @@ import { Link } from "react-router-dom";
 
 const RepoListItem = ({
   name,
-  index,
+  id,
   stars,
   watchers,
   forks,
   description,
   language,
-  url,
 }) => {
   return (
-    <li className="relative bg-yellow-300 hover:bg-yellow-400 list-none">
-      <Link to={`/repo/${index}`}>
+    <li className="relative list-none bg-yellow-300 hover:bg-yellow-400">
+      <Link to={`/repo/${id}`}>
         <div>
           {/* name & language wrapper */}
-          <div className="flex text-white relative font-normal sm:mb-1 mt-0 leading-none whitespace-nowrap">
-            <h3 className="bg-pink-500 py-1 pl-2 pr-3 text-xl w-full sm:w-auto">
+          <div className="relative flex mt-0 font-normal leading-none text-white sm:mb-1">
+            <h3 className="w-full py-1 pl-2 pr-3 text-xl truncate bg-pink-500 sm:w-auto">
               {name}
             </h3>
 
             {/* language */}
             {language && (
-              <h3 className="bg-blue-400 text-lg py-1 pl-2 pr-3">{language}</h3>
+              <h3 className="py-1 pl-2 pr-3 text-lg bg-blue-400">{language}</h3>
             )}
           </div>
           {/* Indicator wrapper */}
@@ -57,7 +56,7 @@ const RepoListItem = ({
             </div>
           </div>
         </div>
-        <p className="mb-0 mt-1 px-2 sm:p-auto text-gray-600 overflow-hidden whitespace-nowrap text-ellipsis">
+        <p className="px-2 mt-1 mb-0 text-gray-600 truncate sm:p-auto">
           {description}
         </p>
       </Link>

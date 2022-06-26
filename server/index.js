@@ -1,5 +1,5 @@
 import express from "express";
-import path, { dirname } from "path";
+import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -18,12 +18,12 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 if (process.env.NODE_ENV === "production") {
   //serving static files for production
   app.use(express.static(path.join(__dirname, "/frontend/build")));
-  app.get("*", (req, res) => {
+  app.get("*", (_, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 } else {
   //if in development
-  app.get("/", (req, res) => {
+  app.get("/", (_, res) => {
     res.send("API is running....");
   });
 }

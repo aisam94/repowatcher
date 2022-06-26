@@ -1,26 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import RepoPageItem from "./RepoPageItem";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ArrowNarrowLeftIcon } from "@heroicons/react/solid";
 import GitHubIcon from "../icons/GitHub-Mark-64px.png";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-import { useDispatch, useSelector } from "react-redux";
-
-const RepoPage = ({}) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+const RepoPage = () => {
+  const [languages, setLanguages] = useState([]);
   const { id } = useParams();
 
-  const repoItem = useSelector((state) => state.repo.repo[id]);
+  const repoList = useSelector((state) => state.repo.repo);
+  const repoItem = repoList.find((item) => item.id.toString() === id);
   const createdDate = new Date(repoItem.created_at);
   const updatedDate = new Date(repoItem.updated_at);
+  const pushDate = new Date(repoItem.pushed_at);
+
+  //convert kilobytes to megabytes
+  const formatFileSize = (bytes, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes";
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
+
+  useEffect(() => {
+    //get languages used
+    const getLanguages = async () => {
+      let langArr = [];
+      const { data } = await axios.get(repoItem.languages_url);
+      for (const key in data) {
+        langArr.push(key);
+      }
+      setLanguages(langArr);
+      return langArr;
+    };
+
+    getLanguages();
+  });
 
   return (
-    <main className="mt-5 mx-10 space-y-2">
+    <main className="mx-10 mt-5 space-y-2">
       {/* back button */}
-
       <Link to="/">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white flex items-center space-x-2 rounded-md p-2 m-2">
+        <button className="flex items-center p-2 m-2 text-white bg-blue-600 hover:bg-blue-700 space-x-2 rounded-md">
           <ArrowNarrowLeftIcon className="w-4 h-4" />
           <span>Go Back</span>
         </button>
@@ -37,39 +64,93 @@ const RepoPage = ({}) => {
         />
       )}
 
-      <div className="w-full px-10 py-1 flex justify-between bg-yellow-100">
+      {/* Date wrapper */}
+      <div className="flex items-center w-full px-3 py-1 pb-2 mx-auto text-center text-gray-600 bg-yellow-300 sm:px-10">
+        <div className="items-center mx-auto text-center">
+          {/* created at*/}
+          <div className="inline-block mx-5 mt-2">
+            <h3 className="mb-2 text-xs text-center sm:text-base">
+              Created at:
+            </h3>
+            <div className="text-sm text-center sm:text-xl">
+              {createdDate.toDateString().substring(3)}
+            </div>
+          </div>
+          {/* updated at*/}
+          <div className="inline-block mx-5 mt-2">
+            <h3 className="mb-2 text-xs text-center sm:text-base">
+              Updated at:
+            </h3>
+            <div className="text-sm text-center sm:text-xl">
+              {updatedDate.toDateString().substring(3)}
+            </div>
+          </div>
+
+          {/* pushed at*/}
+          <div className="inline-block mx-5 mt-2">
+            <h3 className="mb-2 text-xs text-center sm:text-base">
+              Pushed at:
+            </h3>
+            <div className="text-sm text-center sm:text-xl">
+              {pushDate.toDateString().substring(3)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* language wrapper */}
+      <div className="flex flex-col w-full px-3 py-3 text-center text-gray-600 bg-yellow-300 justify-evenly sm:px-10">
+        <span className="mb-2 text-xs text-center sm:text-base">
+          Language used in this repo:
+        </span>
+        <ul className="items-center mx-auto text-sm sm:text-xl">
+          {repoItem &&
+            languages.map((item, index) => {
+              return (
+                <li key={index} className="inline-block mx-1 sm:mx-3">
+                  {item}
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+
+      {/* Link and file size wrapper */}
+      <div className="flex w-full px-3 py-1 pb-2 text-gray-600 bg-yellow-300 justify-evenly sm:px-10">
         {/* created at*/}
         <div className="mt-2">
-          <h3 className="mb-2">Created at</h3>
-          <div className="text-xl">{createdDate.toDateString()}</div>
+          <h3 className="mb-2 text-xs text-center sm:text-base">File size:</h3>
+          <div className="text-sm text-center sm:text-xl">
+            {formatFileSize(repoItem.size * 1000)}
+          </div>
         </div>
-        {/* updated at*/}
-        <div className="mt-2">
-          <h3 className="mb-2">Last updated at</h3>
-          <div className="text-xl">{updatedDate.toDateString()}</div>
-        </div>
+
         {/* Github link to actual repo */}
         <a
           href={`${repoItem.html_url}`}
           target="_blank"
           rel="noreferrer noopener"
-          className="mt-2 flex flex-col items-center"
+          className="flex flex-col mt-2 truncate"
         >
-          <img className="" src={GitHubIcon} alt="GitHub" />
-          <span>GITHUB LINK</span>
+          <div className="mb-2 text-xs text-center sm:text-base">
+            Github Link:
+          </div>
+          {/* <img className="w-8" src={GitHubIcon} alt="GitHub" /> */}
+          <div className="text-sm truncate sm:text-base">
+            {repoItem.html_url}
+          </div>
         </a>
       </div>
-      {/* tags */}
 
       {/* readme markdown */}
-      <div className="bg-yellow-100 px-5 py-2">
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo minus
-          praesentium saepe velit illo. Natus veritatis incidunt inventore
-          quidem aperiam deserunt repellat ducimus necessitatibus accusamus
-          dolorem, amet ad perspiciatis praesentium?
-        </p>
-      </div>
+      {/* <div className="px-5 py-2 bg-yellow-100"> */}
+      {/*   <p> */}
+      {/*     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nemo minus */}
+      {/*     praesentium saepe velit illo. Natus veritatis incidunt inventore */}
+      {/*     quidem aperiam deserunt repellat ducimus necessitatibus accusamus */}
+      {/*     dolorem, amet ad perspiciatis praesentium? */}
+      {/*   </p> */}
+      {/* </div> */}
     </main>
   );
 };

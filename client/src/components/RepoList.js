@@ -6,7 +6,7 @@ const RepoList = ({ repo }) => {
     // Iterate the repo list
     <>
       {repo && (
-        <div className="text-center font-bold mb-1">
+        <div className="mb-1 font-bold text-center">
           Showing {repo.length} results
         </div>
       )}
@@ -16,14 +16,13 @@ const RepoList = ({ repo }) => {
             return (
               <RepoListItem
                 key={index}
-                index={index}
+                id={item.id}
                 name={item.name}
                 description={item.description}
                 stars={item.stargazers_count}
                 watchers={item.watchers_count}
                 forks={item.forks_count}
                 language={item.language}
-                url={item.html_url}
               />
             );
           })}
