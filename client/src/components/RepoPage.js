@@ -118,7 +118,7 @@ const RepoPage = () => {
       {/* Link and file size wrapper */}
       <div className="flex w-full px-3 py-1 pb-2 text-gray-600 bg-yellow-300 justify-evenly sm:px-10">
         {/* created at*/}
-        <div className="mt-2">
+        <div className="mt-2 mx-2">
           <h3 className="mb-2 text-xs text-center sm:text-base">File size:</h3>
           <div className="text-sm text-center sm:text-xl">
             {formatFileSize(repoItem.size * 1000)}
@@ -130,15 +130,13 @@ const RepoPage = () => {
           href={`${repoItem.html_url}`}
           target="_blank"
           rel="noreferrer noopener"
-          className="flex flex-col mt-2 truncate"
+          title={repoItem.html_url}
+          className="flex flex-col mt-2 truncate px-5 items-center"
         >
           <div className="mb-2 text-xs text-center sm:text-base">
             Github Link:
           </div>
-          {/* <img className="w-8" src={GitHubIcon} alt="GitHub" /> */}
-          <div className="text-sm truncate sm:text-base">
-            {repoItem.html_url}
-          </div>
+          <img className="w-8" src={GitHubIcon} alt="GitHub" />
         </a>
       </div>
 
