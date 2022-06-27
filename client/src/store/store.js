@@ -13,6 +13,7 @@ const sagaMiddleware = createSagaMiddleware();
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["repo"],
 };
 const persistedReducer = persistReducer(persistConfig, repoReducer);
 
